@@ -14,6 +14,7 @@ interface IERC20 {
 }
 
 contract LiaoToken is IERC20 {
+		mapping(address => mapping(address => uint256)) private _allowance;
     // TODO: you might need to declare several state variable here
     mapping(address account => uint256) private _balances;
     mapping(address account => bool) isClaim;
@@ -59,18 +60,31 @@ contract LiaoToken is IERC20 {
     }
 
     function transfer(address to, uint256 amount) external returns (bool) {
-        // TODO: please add your implementaiton here
+        _balances[msg.sender] -= amount;
+				_balances[to] += amount;
+				emit Transfer(msg.sender, to, amount);
+				return true;
+				// TODO: please add your implementaiton here
     }
 
     function transferFrom(address from, address to, uint256 value) external returns (bool) {
-        // TODO: please add your implementaiton here
+        _allowance[from][msg.sender] -= value;
+				_balances[from] -= value;
+				_balances[to] += value;
+				emit Transfer(from, to, value);
+				return true;
+				// TODO: please add your implementaiton here
     }
 
     function approve(address spender, uint256 amount) external returns (bool) {
+				_allowance[msg.sender][spender] = amount;
+				emit Approval(msg.sender, spender, amount);
+				return true;
         // TODO: please add your implementaiton here
     }
 
     function allowance(address owner, address spender) public view returns (uint256) {
-        // TODO: please add your implementaiton here
+        return _allowance[owner][spender];
+				// TODO: please add your implementaiton here
     }
 }
