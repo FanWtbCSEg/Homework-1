@@ -35,11 +35,11 @@ contract StudentV2 {
 /* Problem 3 Interface & Contract */
 contract StudentV3 {
     function register() external view returns (uint256) {
-        if(gasleft() > 7000) {
+        if(gasleft() < 7000) {
             return 123;
         }
         uint256 a = 0;
-        while(gasleft() < 7000) {
+        while(gasleft() >= 7000) {
             a += 1;
         }
         return 1000;
