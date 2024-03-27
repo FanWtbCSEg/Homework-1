@@ -67,7 +67,7 @@ contract LiaoToken is IERC20 {
 				// TODO: please add your implementaiton here
     }
 
-    function transferFrom(address from, address to, uint256 value) external returns (bool) {
+    function transferFrom(address from, address to, uint256 value) external override returns (bool) {
         _allowance[from][msg.sender] -= value;
 				_balances[from] -= value;
 				_balances[to] += value;
