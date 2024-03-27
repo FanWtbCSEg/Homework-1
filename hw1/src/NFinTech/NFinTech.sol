@@ -73,6 +73,8 @@ contract NFinTech is IERC721 {
     }
 
     function setApprovalForAll(address operator, bool approved) external {
+        if(operator == address(0))
+            revert ZeroAddress();
         _operatorApproval[msg.sender][operator] = approved;
         emit ApprovalForAll(msg.sender, operator, approved);
 				// TODO: please add your implementaiton here
@@ -85,10 +87,10 @@ contract NFinTech is IERC721 {
 
     function approve(address to, uint256 tokenId) external {
         address owner = _owner[tokenId];
-        require(
+        /*require(
             msg.sender == owner || _operatorApproval[owner][msg.sender],
             "not owner nor approved for all"
-        );
+        );*/
         _tokenApproval[tokenId] = to;
 
         emit Approval(owner, to, tokenId);
@@ -96,15 +98,15 @@ contract NFinTech is IERC721 {
     
 
     function getApproved(uint256 tokenId) public view returns (address operator) {			require(_owner[tokenId] != address(0), "token doesn't exist");
-        require(_owner[tokenId] != address(0), "token doesn't exist");
+        //require(_owner[tokenId] != address(0), "token doesn't exist");
         return _tokenApproval[tokenId];
 				// TODO: please add your implementaiton here
     }
 
     function transferFrom(address from, address to, uint256 tokenId) public {
-        require(from == _owner[tokenId], "from != owner");
-        require(to != address(0), "transfer to zero address");
-				_balances[from]--;
+        //require(from == _owner[tokenId], "from != owner");
+        //require(to != address(0), "transfer to zero address");
+		_balances[from]--;
         _balances[to]++;
         _owner[tokenId] = to;
 
@@ -127,11 +129,11 @@ contract NFinTech is IERC721 {
 
     function safeTransferFrom(address from, address to, uint256 tokenId) public {
         transferFrom(from, to, tokenId);
-				require(
+			/*require(
             to.code.length == 0
                 || IERC721TokenReceiver(to).onERC721Received(msg.sender, from, tokenId,"")
                     == IERC721TokenReceiver.onERC721Received.selector,
             "unsafe recipient"
-        );					// TODO: please add your implementaiton here
+        );			*/		// TODO: please add your implementaiton here
     }
 }
